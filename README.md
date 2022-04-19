@@ -1,3 +1,6 @@
+Ceci est le projet effectué pour la NSI en classe de Terminale
+Il est encore incomplet (pas d'options, mode deux joueurs incomplet)
+
 Pour installer ce logiciel, il faut python dans sa version 3
 Les versions trop récentes de python ne fonctionnent pas, la dernière fonctionnelle est python 3.9
 
