@@ -1,0 +1,3 @@
+JID=0
+JIP=0
+multij=0

@@ -1,0 +1,4 @@
+pysqlite3>=0.4.7
+pywebview>=3.6.2
+requests>=2.21.0
+pydub>=0.25

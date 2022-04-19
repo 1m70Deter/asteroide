@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/index.css">
+        <title>Asteroide</title>
+    </head>
+    <body>
+        <span id="idPartie"></span>
+        <span id="score">0 pt</span>
+        <div class="player" id="player1" style="display: none;">
+            <span class="line" style="width: 50px; transform: rotate(15deg); top: 6px; left: 0px;"></span>
+            <span class="line" style="width: 50px; transform: rotate(-15deg); top: 15px; left: 0px;"></span>
+            <span class="line" style="width: 15px; transform: rotate(60deg); top: 0px; left: -1px;"></span>
+            <span class="line" style="width: 15px; transform: rotate(-60deg); top: 8px; left: -2px;"></span>
+        </div>
+        <div class="sub-player1" style="transition: 500ms; display: none;">
+            <span class="line" style="background: #f9f65e; width: 50px; transform: rotate(15deg); top: 6px; left: 0px;"></span>
+            <span class="line" style="background: #f9f65e; width: 50px; transform: rotate(-15deg); top: 15px; left: 0px;"></span>
+            <span class="line" style="background: #f9f65e; width: 15px; transform: rotate(60deg); top: 0px; left: -1px;"></span>
+            <span class="line" style="background: #f9f65e; width: 15px; transform: rotate(-60deg); top: 8px; left: -2px;"></span>
+        </div>
+        <div class="sub-player2" style="transition: 800ms; display: none;">
+            <span class="line" style="background: #f85ef9; width: 50px; transform: rotate(15deg); top: 6px; left: 0px;"></span>
+            <span class="line" style="background: #f85ef9; width: 50px; transform: rotate(-15deg); top: 15px; left: 0px;"></span>
+            <span class="line" style="background: #f85ef9; width: 15px; transform: rotate(60deg); top: 0px; left: -1px;"></span>
+            <span class="line" style="background: #f85ef9; width: 15px; transform: rotate(-60deg); top: 8px; left: -2px;"></span>
+        </div>
+    </body>
+    <div class="score-win-parent" style="">
+        <div class="score-win">
+            <p>Score :</p>
+            <p id="score-text"></p>
+            <input type="text" id="nom-joueur" value="" maxlength="3" oninput="checkLength()">
+            <div class="under-text">
+                <span class="line"></span>
+                <span class="line"></span>
+                <span class="line"></span>
+            </div>
+            <button style="margin-top: 13px;" type="button" name="button" onclick="ecrireScore();">C'est bon</button>
+        </div>
+    </div>
+    <div class="scoreboard-win-parent" style="top: 0%; right: -100%;">
+        <div class="scoreboard-win">
+            <span>Meilleurs Scores :</span>
+            <br />
+        </div>
+    </div>
+</html>
+<script src="js/jeu.js"></script>
+<script src="js/win-animation.js"></script>
+<script src="js/bdd.js"></script>
