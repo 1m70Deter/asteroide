@@ -99,7 +99,7 @@ html {
     border-radius: 100px;
     background: #ddd;
 }
-#idPartie, #score {
+#idPartie, #score, .coeur-box {
     position: absolute;
     display: block;
     top: 0px;
@@ -112,10 +112,17 @@ html {
     text-align: right;
     font-family: pdark;
 }
-#score {
+#score, .coeur-box {
     left: 0px;
     right: unset;
     text-align: left;
+}
+.coeur-box {
+    top: 26px;
+    height: 30px;
+}
+.coeur-box img {
+    height: 20px;
 }
 
 .score-win-parent, .scoreboard-win-parent {
