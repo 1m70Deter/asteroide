@@ -1,0 +1,57 @@
+Pour installer ce logiciel, il faut python dans sa version 3
+
+==========================================
+=                                        =
+=                Windows                 =
+=                                        =
+==========================================
+
+Les versions trop récentes de python ne fonctionnent pas car elles ne sont pas prises en charge par pythonnet.
+La dernière fonctionnelle est python 3.9, elle peut être installée ici pour windows :
+
+    https://www.python.org/ftp/python/3.9.7/python-3.9.7-amd64.exe
+
+Il faudra ensuite installer les dépendances du programme :
+    
+    py -m pip install -r requirements.txt
+    
+Si une erreur liée à pythonnet apparaît, ou que le programme affiche une RuntimeError, tapez :
+  
+    py -m pip uninstall pythonnet
+    py -m pip install pythonnet==3.0.0a1
+    py -m pip install -r requirements.txt
+
+Si le programme affiche une page requierant des permissions administrateurs pour l'inspecteur de pages web, acceptez.
+Fermez ensuite le programme et relancez le depuis la ligne de commande.
+
+
+==========================================
+=                                        =
+=                GNU/Linux               =
+=                                        =
+==========================================
+
+Pour Installer Python3 sur Linxu, il vous faudra ces commandes en fonction des versions :
+
+  - Debian :
+      # apt install python3
+
+  - Arch :
+      # pacman -S python
+
+Il suffira ensuite d'installer les dépendances liées au programme avec pip :  
+
+    $ pip3 install -r requirements.txt
+
+Pour lancer le logiciel il n'y aura plus qu'à exécuter le fichier main.py ou à taper :
+
+    $ python3 main.py
+
+
+==========================================
+=                                        =
+=                Mac OSX                 =
+=                                        =
+==========================================
+
+Trop pauvres pour avoir des Macs dans ce bahut, il faudra donc se débrouiller tout seul :O

@@ -1,3 +1,4 @@
-JID=0
-JIP=0
-multij=0
+JID=134
+JIP=192.168.1.254
+multij=1
+sip=176.155.253.93
