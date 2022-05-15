@@ -27,18 +27,22 @@ col = ["#68d5f7", "#f7f568", "#81f768", "#f768ab"]
 trembler_rythme = window.setInterval(function() {
     document.body.style.transition = "0ms";
     document.body.style.top = "7px";
-    for(var i = 0; i < document.getElementsByClassName("asteroide").length; i++) {
-        var bgCol = col[Math.floor(Math.random()*4)];
-        for(var j = 0; j < document.getElementsByClassName("asteroide")[i].getElementsByTagName("span").length; j++) {
-            document.getElementsByClassName("asteroide")[i].getElementsByTagName("span")[j].style.background = bgCol;
+    if(multijoueur == 0) {
+        for(var i = 0; i < document.getElementsByClassName("asteroide").length; i++) {
+            var bgCol = col[Math.floor(Math.random()*4)];
+            for(var j = 0; j < document.getElementsByClassName("asteroide")[i].getElementsByTagName("span").length; j++) {
+                document.getElementsByClassName("asteroide")[i].getElementsByTagName("span")[j].style.background = bgCol;
+            }
         }
     }
     window.setTimeout(function() {
         document.body.style.transition = "200ms";
         document.body.style.top = "0px";
-        for(var i = 0; i < document.getElementsByClassName("asteroide").length; i++) {
-            for(var j = 0; j < document.getElementsByClassName("asteroide")[i].getElementsByTagName("span").length; j++) {
-                document.getElementsByClassName("asteroide")[i].getElementsByTagName("span")[j].style.background = "#fff";
+        if(multijoueur == 0) {
+            for(var i = 0; i < document.getElementsByClassName("asteroide").length; i++) {
+                for(var j = 0; j < document.getElementsByClassName("asteroide")[i].getElementsByTagName("span").length; j++) {
+                    document.getElementsByClassName("asteroide")[i].getElementsByTagName("span")[j].style.background = "#fff";
+                }
             }
         }
     }, 462);

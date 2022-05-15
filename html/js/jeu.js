@@ -6,7 +6,8 @@ window.setTimeout(function() {
         rep.then((r) => {
             multijoueur = r.multij;
             ip = r.jip;
-            idDeJeu = document.getElementById("idPartie").textContent = r.jid;
+            idDeJeu = r.jid;
+            document.getElementById("idPartie").textContent = "ID : " + r.jid;
             if(multijoueur == 0) {
                 document.getElementById("idPartie").style.display = 'none';
             }
@@ -14,7 +15,7 @@ window.setTimeout(function() {
     } catch(e) {
         console.warn("Pas d'API disponible : " + e);
     }
-}, 100);
+}, 500);
 
 // Variables plus globales :
 var mvt = [0, 0, 0, 0], tir = false;
@@ -95,11 +96,13 @@ function changerPosJoueur(j) {
         if(j.x < posA.x && j.x > posA.x2) {
             if((j.y < posA.y && j.y > posA.y2) || (j.y > posA.y && j.y < posA.y2)) {
                 perdreVie(a);
+                break;
             }
         }
         if(j.x > posA.x && j.x < posA.x2) {
             if((j.y < posA.y && j.y > posA.y2) || (j.y > posA.y && j.y < posA.y2)) {
                 perdreVie(a);
+                break;
             }
         }
     }
@@ -169,7 +172,11 @@ dpplayer = window.setInterval(function() {
         j1.centre.y = -1 * (long*Math.abs(Math.sin((Math.PI*j1.rt)/180))/1.25)+15;
     }
 }, 10);
-window.setInterval(function() {
+dpb = window.setInterval(function() {
+    if(multijoueur == 1) {
+        clearInterval(dpb);
+        return false;
+    }
     for(var i = document.getElementsByClassName("tir").length-1; i >= 0; i--) {
         t = document.getElementsByClassName("tir")[i];
         ta = t.id.split(";")[0];
@@ -238,9 +245,11 @@ function perdreVie(a) {
     j1.vie--;
     detruireAsteroide(a);
     if(j1.vie <= 0) {
+        // Le même algorithme est utilisé par PHP, donc les vies sont supposées être totalement synchronisées
         finDePartie();
         return true;
     }
+    document.getElementsByClassName("coeur-box")[0].removeChild(document.getElementsByClassName("coeur-box")[0].childNodes[document.getElementsByClassName("coeur-box")[0].childNodes.length-2]);
     document.getElementsByClassName("player")[0].className = document.getElementsByClassName("player")[0].className + " clignoter";
     document.getElementsByClassName("sub-player1")[0].className = document.getElementsByClassName("sub-player1")[0].className + " clignoter";
     document.getElementsByClassName("sub-player2")[0].className = document.getElementsByClassName("sub-player2")[0].className + " clignoter";
@@ -251,7 +260,7 @@ function perdreVie(a) {
         document.getElementsByClassName("sub-player2")[0].className = document.getElementsByClassName("sub-player2")[0].className.split(" ")[0];
     }, 5000);
 }
-var posJ = [], posA = [], posT = [], indexJ = -1;
+var posJ = [], posA = [], posT = [], infos = [], ancienneVie = 3; indexJ = -1;
 dpj = window.setInterval(function() {
     if(ip == "" | ip == "0") {
         return false;
@@ -259,9 +268,10 @@ dpj = window.setInterval(function() {
     var rep = pywebview.api.getPosition(idDeJeu);
     window.setTimeout(function() {
         rep.then((r) => {
-            posJ = JSON.parse(r.split("|")[1]);
-            posA = JSON.parse(r.split("|")[2]);
-            posT = JSON.parse(r.split("|")[3]);
+            posJ  = JSON.parse(r.split("|")[1]);
+            posA  = JSON.parse(r.split("|")[2]);
+            posT  = JSON.parse(r.split("|")[3]);
+            infos = JSON.parse(r.split("|")[4]);
         });
         // Il faut trier les positions pour mettre celle du client en premier :
         if(indexJ != -1 && posJ.length != 1) {
@@ -301,10 +311,23 @@ dpj = window.setInterval(function() {
             document.body.appendChild(t);
             t.id = posT[i].a + ";" + posT[i].x + ";" + posT[i].y;
         }
+        // On exploite finalement les informations issues de la partie (score, vie) :
+        document.getElementById("score").textContent = infos[1].points + " pts"
+        if(ancienneVie != infos[0].vies) {
+            ancienneVie = infos[0].vies;
+            perdreVie();
+            if(infos[0].vies <= 0) {
+                finDePartie();
+            }
+        }
         // Si la position du joueur à changé, on le signale à la base de données
         if(posChange == true) {
             if(j1.x != oldx || j1.y != oldy || j1.rt != oldrt) {
-                pywebview.api.postPosition(j1, idDeJeu);
+                var postRep = pywebview.api.postPosition(j1, idDeJeu);
+                postRep.then((log) => {
+                    // Log de la méthode POST, à afficher en cas d'erreurs
+                    //console.log(log);
+                });
                 oldx = j1.x, oldy = j1.y, oldrt = j1.rt;
             }
         }

@@ -2,15 +2,16 @@ var pts = 0;
 function finDePartie() {
     // Cette fonction gère toutes les intéractions avec pyWebview faites en fin de partie
     // On affiche le score au joueur
-    document.getElementById("score-text").textContent = pts + " pts";
     document.getElementsByClassName("score-win-parent")[0].style = "top: 0px;";
     clearInterval(trembler_rythme);
     clearInterval(dpplayer);
     clearInterval(dpSub1);
     clearInterval(dpSub2);
+    clearInterval(dpj);
     document.body.removeChild(document.getElementsByClassName("player")[0]);
     document.body.removeChild(document.getElementsByClassName("sub-player1")[0]);
     document.body.removeChild(document.getElementsByClassName("sub-player2")[0]);
+    pywebview.api.quitterPartie(idDeJeu);
 }
 function checkLength() {
     // Permet de connaître la longueur du nom et ainsi de faire perdre le focus à l'éditeur en cas de complet
@@ -31,7 +32,7 @@ function ecrireScore() {
             }
         }, 300);
     } else {
-        var rep = pywebview.api.writeScore(document.getElementById("nom-joueur").value, pts, multijoueur);
+        var rep = pywebview.api.writeScore(document.getElementById("nom-joueur").value, pts, multijoueur, idDeJeu);
         rep.then((r) => {
             document.getElementsByClassName("score-win-parent")[0].style = "top: 0%; right: 100%;";
             document.getElementsByClassName("scoreboard-win-parent")[0].style = "top: 0%; right: 0%;";
