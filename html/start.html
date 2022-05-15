@@ -22,11 +22,18 @@
 <div class="opt-win-parent" style="display: none;">
     <div class="opt-win">
         <h2 align="center">Options</h2>
+        <p style="width: 100%; font-weight: bold; font-family: monospace; color: white; font-size: 20px;">IP du serveur :</p>
+        <div style="display: flex; align-items: center;">
+            <input type="text" id="ipText" name="" value="127.0.0.1" placeholder="127.0.0.1" style="flex: 10; margin-right: 10px; padding: 5px; height: 20px;">
+            <input type="button" name="button" style="flex: 1;" value="Changer" onclick="changerServeur(document.getElementById('ipText').value)">
+        </div>
+        <br>
+        <br>
         <div class="">
-            <input type="checkbox" checked name=""  id"musique"><label for="musique">Musique</label>
+            <input type="checkbox" disabled checked name=""  id"musique"> <label for="musique">Musique</label>
         </div>
         <div class="">
-            <input type="checkbox" checked name="" id"bruitage"><label for="bruitage">Bruitage</label>
+            <input type="checkbox" disabled checked name="" id"bruitage"> <label for="bruitage">Bruitage</label>
         </div>
     </div>
 </div>
@@ -71,11 +78,11 @@
     h1 {
         font-size: 80px;
     }
-    h1, h2, button, label {
+    h1, h2, button, label, input[type="button"] {
         font-family: pdark;
         color: white;
     }
-    button {
+    button, input[type="button"] {
         padding: 10px 25px 10px 25px;
         border: solid white 1px;
         background: rgba(0, 0, 0, 0);
@@ -86,7 +93,7 @@
         margin-top: 20px;
         left: 0px;
     }
-    button:hover {
+    button:hover, input[type="button"]:hover {
         background: rgba(255, 255, 255, 1);
         color: #111;
         transform: scale(1.05);
@@ -142,7 +149,7 @@
 <script type="text/javascript">
     // Evénements gérant l'ouverture du Jeu
     document.getElementById("commencer").addEventListener("click", function() {
-        pywebview.api.ecrireConf(0, 0, 0);
+        pywebview.api.ecrireConf(0, 0, 0, "");
         window.setTimeout(function() {
             pywebview.api.ouvrirJeu();
         }, 100);
@@ -162,11 +169,32 @@
     document.getElementsByClassName("ip-win")[0].onclick = function(e) {
         e.stopPropagation();
     }
+    document.getElementById("optbtn").addEventListener("click", function() {
+        document.getElementsByClassName("opt-win-parent")[0].style = "display: flex;";
+        window.setTimeout(function() {
+            document.getElementsByClassName("opt-win-parent")[0].style = "display: flex; top: 0%;";
+            var rep = pywebview.api.lireConf();
+            window.setTimeout(function() {
+                rep.then((r) => {
+                    document.getElementById('ipText').value = r.sip;
+                });
+            }, 100);
+        }, 10);
+    });
+    document.getElementsByClassName("opt-win-parent")[0].onclick = function(e) {
+        document.getElementsByClassName("opt-win-parent")[0].style = "top: 100%;";
+        window.setTimeout(function() {
+            document.getElementsByClassName("opt-win-parent")[0].style = "display: none;";
+        }, 300);
+    }
+    document.getElementsByClassName("opt-win")[0].onclick = function(e) {
+        e.stopPropagation();
+    }
     function creerPartieJS() {
         rep = pywebview.api.creerPartie();
         window.setTimeout(function() {
             rep.then((r) => {
-                pywebview.api.ecrireConf(1, r.split("|")[1], r.split("|")[0]);
+                pywebview.api.ecrireConf(1, r.split("|")[1], r.split("|")[0], "");
             });
             window.setTimeout(function() {
                 pywebview.api.ouvrirJeu();
@@ -180,13 +208,18 @@
         } else {
             window.setTimeout(function() {
                 rep.then((r) => {
-                    pywebview.api.ecrireConf(1, r, document.getElementById("partieID").value);
+                    pywebview.api.ecrireConf(1, r, document.getElementById("partieID").value, "");
                 });
                 window.setTimeout(function() {
                     pywebview.api.ouvrirJeu();
                 }, 100);
             }, 100);
         }
+    }
+    // Code pour changer l'IP à l'intérieur des confs
+    function changerServeur(ip) {
+        // TODO: Ajouter un algo de vérification de l'ip
+        pywebview.api.ecrireConf(0, 0, 0, ip);
     }
     // Ici, on crée des points blancs nommés étoile, et on les allume avec un délai aléatoire
     for(var i = 0; i < Math.floor(Math.random()*50)+25; i++) {
